@@ -10,7 +10,12 @@ use \GuzzleHttp\HandlerStack;
 class PunkApiController extends Controller
 {
     //
-    public function searchBeer(PunkApiRequest $request){
+    public function searchBeer(Request $request){
+
+        $validator = \Validator::make($request->all(), PunkApiRequest::rules());
+        if ($validator->fails()) {
+            return response()->json(['res' => 'ko', 'errors' => $validator->messages()]);
+        }
 
         $client = new Client();
         $stack = HandlerStack::create();
@@ -27,23 +32,29 @@ class PunkApiController extends Controller
             $param['per_page'] = $request->get('per_page');
         }
 
-        $request = $client->request(
-            'GET',
-            config('punkapi.url'),
-            [
-                'handler' => $stack,
-                'headers' => $headers,
-                'query' => $param
-            ]
-        );
-
-        $body = $request->getBody();
-
-        $s = "";
-        while($s_temp = $body->read(1024)){
-            $s .= $s_temp;
+        try{
+            $request = $client->request(
+                'GET',
+                config('punkapi.url'),
+                [
+                    'handler' => $stack,
+                    'headers' => $headers,
+                    'query' => $param
+                ]
+            );
+    
+            $body = $request->getBody();
+    
+            $s = "";
+            while($s_temp = $body->read(1024)){
+                $s .= $s_temp;
+            }
+            $s = json_decode($s);
+            return response()->json(['beer' => $s], 200);
         }
-        $s = json_decode($s);
-        return response()->json(['beer' => $s], 200);
+        catch(\Exception $e){
+            throw $e;
+        }
+        
     }
 }
