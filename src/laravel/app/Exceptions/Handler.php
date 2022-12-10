@@ -37,4 +37,14 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e){
+        if($e instanceof UserNotFoundException){
+            return response()->json(['res' => 'ko', 'errors' => $e->getMessage()], 404);
+        }
+        if($e instanceof TokenNotFound){
+            return response()->json(['res' => 'ko', 'errors' => $e->getMessage()], 500);
+        }
+        return parent::render($request, $exception);
+    }
 }
