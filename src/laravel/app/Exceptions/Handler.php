@@ -45,6 +45,6 @@ class Handler extends ExceptionHandler
         if($e instanceof TokenNotFound){
             return response()->json(['res' => 'ko', 'errors' => $e->getMessage()], 500);
         }
-        return parent::render($request, $exception);
+        return parent::render($request, $e);
     }
 }

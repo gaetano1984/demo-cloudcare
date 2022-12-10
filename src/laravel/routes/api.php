@@ -20,7 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('auth', ['App\Http\Controllers\AuthController', 'getToken']);
 Route::group(['prefix' => 'beer', 'middleware' => 'apiauth'], function(){
-    Route::get('search', function(){
-        return Response::json(['beer' => []], 200);
-    });
+    Route::get('search', ['App\Http\Controllers\PunkApiController', 'searchBeer']);
 });
