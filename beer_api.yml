@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: API - Beer
+  version: 1.0.0
+paths:
+  /api/auth:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: email of the user
+                password:
+                  type: string
+                  description: password ot the user
+      tags:
+        - beer
+      responses:
+        200:
+          description:
+            "login ok"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: user token 
+                    example: abd660be3a1a9e8e21c8251eabcf6030ec67932e0599665f104ec7d30eda6278
+        404:
+          description:
+            "login failed"
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  res:
+                    type: string
+                    example: "ko"
+                  errors:
+                    type: string
+                    example: user not found
+
+  /api/beer/search:
+    get:
+      parameters:
+        - in: query
+          name: page
+          example: 1
+          type: integer
+          description: page to visualize
+        - in: query
+          name: per_page
+          example: 1
+          type: integer
+          description: beer per page to visualize      
+      tags:
+        - beer                    
+      responses:  
+        200:
+          description: 
+            "beer search ok"
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beer:
+                    type: array
+                    description: list of beers
+                    items:
+                      type: object
+
