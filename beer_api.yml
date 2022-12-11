@@ -63,6 +63,11 @@ paths:
           example: 1
           type: integer
           description: beer per page to visualize      
+        - in: header
+          name: token          
+          description: an authorization header, generated via /api/auth request
+          required: true
+          type: string
       tags:
         - beer                    
       responses:  

@@ -9,19 +9,7 @@
 			"name": "beer",
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "root",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "root",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [
